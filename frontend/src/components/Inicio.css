@@ -1,0 +1,92 @@
+.inicio-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+.inicio-card {
+  width: 100%;
+  max-width: 550px;
+  padding: 50px;
+  text-align: center;
+  border-radius: 25px;
+  box-sizing: border-box;
+
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+}
+
+.inicio-icon {
+  font-size: 70px;
+  margin-bottom: 20px;
+}
+
+.inicio-card h1 {
+  font-size: 42px;
+  margin: 0;
+}
+
+.inicio-card p {
+  font-size: 18px;
+  color: #666;
+  margin: 15px 0 40px;
+}
+
+.inicio-button {
+  width: 100%;
+  max-width: 300px;
+  height: 100px;
+
+  border: none;
+  border-radius: 18px;
+
+  font-size: 30px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.inicio-button span {
+  font-size: 35px;
+}
+
+.inicio-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+.inicio-button:active {
+  transform: translateY(0);
+}
+
+footer {
+  position: absolute;
+  bottom: 20px;
+
+  font-size: 14px;
+  color: #888;
+}
+
+@media (max-width: 600px) {
+  .inicio-card {
+    padding: 35px 25px;
+  }
+
+  .inicio-card h1 {
+    font-size: 32px;
+  }
+
+  .inicio-icon {
+    font-size: 55px;
+  }
+}

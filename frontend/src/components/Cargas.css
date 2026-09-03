@@ -1,0 +1,112 @@
+.cargas-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+.titulo-cargas {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.titulo-cargas h1 {
+  font-size: 42px;
+  margin: 0;
+}
+
+.titulo-cargas p {
+  font-size: 20px;
+  margin-top: 10px;
+  color: #666;
+}
+
+.camiones-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 250px);
+  gap: 25px;
+}
+
+.camion-button {
+  height: 160px;
+  font-size: 25px;
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.camion-button span {
+  font-size: 50px;
+}
+
+.camion-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+}
+
+.camion-button:active {
+  transform: translateY(0);
+}
+
+.volver-button {
+  margin-top: 40px;
+  padding: 15px 40px;
+  font-size: 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.volver-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+}
+
+.volver-button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 600px) {
+  .camiones-grid {
+    grid-template-columns: 1fr;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .camion-button {
+    height: 130px;
+  }
+
+  .titulo-cargas h1 {
+    font-size: 32px;
+  }
+
+  .titulo-cargas p {
+    font-size: 18px;
+  }
+}
+.camion-button strong {
+  display: block;
+  margin-top: 8px;
+}
+
+.camion-button small {
+  display: block;
+  margin-top: 5px;
+  font-size: 14px;
+  opacity: 0.7;
+}

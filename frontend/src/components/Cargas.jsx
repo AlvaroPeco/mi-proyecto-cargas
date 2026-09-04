@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import './Cargas.css'
 
 function Cargas({ onSeleccionarCamion, onVolver }) {
-
   const [vehiculos, setVehiculos] = useState([])
   const [error, setError] = useState('')
 
@@ -12,7 +11,6 @@ function Cargas({ onSeleccionarCamion, onVolver }) {
         if (!respuesta.ok) {
           throw new Error('Error al obtener los vehículos')
         }
-
         return respuesta.json()
       })
       .then((datos) => {
@@ -26,44 +24,43 @@ function Cargas({ onSeleccionarCamion, onVolver }) {
 
   return (
     <div className="cargas-container">
+      {/* Tarjeta contenedora principal */}
+      <div className="cargas-card">
+        
+        {/* Cabecera con botón volver y título */}
+        <div className="cargas-header">
+          <button className="volver-button" onClick={onVolver}>
+            ← Volver
+          </button>
+          
+          <div className="titulo-cargas">
+            <h1>Gestión de Cargas</h1>
+            <p>Selecciona el vehículo</p>
+          </div>
+        </div>
 
-      <div className="titulo-cargas">
-        <h1>Gestión de Cargas</h1>
-        <p>Selecciona el vehículo</p>
+        {error && <p className="error-mensaje">{error}</p>}
+
+        {/* Grilla de vehículos */}
+        <div className="camiones-grid">
+          {vehiculos.map((vehiculo) => {
+            const esFurgoneta = vehiculo.nombre.toLowerCase().includes('furgoneta')
+
+            return (
+              <button
+                key={vehiculo.idVehiculo}
+                className="camion-button"
+                onClick={() => onSeleccionarCamion(vehiculo.idVehiculo)}
+              >
+                <span>{esFurgoneta ? '🚐' : '🚛'}</span>
+                <strong>{vehiculo.nombre}</strong>
+                <small>{vehiculo.matricula}</small>
+              </button>
+            )
+          })}
+        </div>
+
       </div>
-
-      {error && <p>{error}</p>}
-
-      <div className="camiones-grid">
-
-        {vehiculos.map((vehiculo) => {
-
-          const esFurgoneta =
-            vehiculo.nombre.toLowerCase().includes('furgoneta')
-
-          return (
-            <button
-              key={vehiculo.idVehiculo}
-              className="camion-button"
-              onClick={() =>
-                onSeleccionarCamion(vehiculo.idVehiculo)
-              }
-            >
-              <span>{esFurgoneta ? '🚐' : '🚛'}</span>
-
-              <strong>{vehiculo.nombre}</strong>
-
-              <small>{vehiculo.matricula}</small>
-            </button>
-          )
-        })}
-
-      </div>
-
-      <button className="volver-button" onClick={onVolver}>
-        ← Volver
-      </button>
-
     </div>
   )
 }

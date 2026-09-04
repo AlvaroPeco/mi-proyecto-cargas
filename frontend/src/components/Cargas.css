@@ -1,112 +1,175 @@
+/* Pantalla completa */
 .cargas-container {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 30px;
+  background-color: #f8fafc; /* Fondo gris claro suave para resaltar el contenedor */
+  padding: 20px;
   box-sizing: border-box;
 }
 
+/* Tarjeta o Contenedor Principal */
+.cargas-card {
+  width: 100%;
+  max-width: 650px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 35px 30px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.03);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Cabecera dentro de la tarjeta */
+.cargas-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 30px;
+}
+
+.volver-button {
+  padding: 8px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  margin-bottom: 20px;
+}
+
+.volver-button:hover {
+  background: #f1f5f9;
+}
+
+.volver-button:active {
+  transform: translateY(1px);
+}
+
 .titulo-cargas {
+  width: 100%;
   text-align: center;
-  margin-bottom: 45px;
 }
 
 .titulo-cargas h1 {
-  font-size: 42px;
+  font-size: 32px;
+  color: #0f172a;
   margin: 0;
+  font-weight: 700;
 }
 
 .titulo-cargas p {
-  font-size: 20px;
-  margin-top: 10px;
-  color: #666;
+  font-size: 16px;
+  margin-top: 6px;
+  color: #64748b;
 }
 
+/* Mensaje de error */
+.error-mensaje {
+  color: #ef4444;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+/* Grilla de tarjetas de vehículos */
 .camiones-grid {
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, 250px);
-  gap: 25px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
 }
 
 .camion-button {
-  height: 160px;
-  font-size: 25px;
+  height: 150px;
+  font-size: 18px;
   font-weight: bold;
-  border: none;
-  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background-color: #f8fafc;
+  color: #1e293b;
   cursor: pointer;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 15px;
 
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.2s ease-in-out;
 }
 
 .camion-button span {
-  font-size: 50px;
+  font-size: 44px;
+  line-height: 1;
+}
+
+.camion-button strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 18px;
+}
+
+.camion-button small {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+  color: #64748b;
+  font-weight: normal;
 }
 
 .camion-button:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+  background-color: #ffffff;
+  border-color: #3b82f6;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.12);
 }
 
 .camion-button:active {
   transform: translateY(0);
 }
 
-.volver-button {
-  margin-top: 40px;
-  padding: 15px 40px;
-  font-size: 20px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.volver-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
-}
-
-.volver-button:active {
-  transform: translateY(0);
-}
-
+/* Adaptación para dispositivos móviles */
 @media (max-width: 600px) {
-  .camiones-grid {
-    grid-template-columns: 1fr;
-    width: 100%;
-    max-width: 300px;
+  .cargas-container {
+    padding: 12px;
+    align-items: flex-start;
   }
 
-  .camion-button {
-    height: 130px;
+  .cargas-card {
+    padding: 20px 16px;
+    border-radius: 12px;
+  }
+
+  .cargas-header {
+    margin-bottom: 20px;
+  }
+
+  .volver-button {
+    margin-bottom: 12px;
+    padding: 6px 12px;
+    font-size: 13px;
   }
 
   .titulo-cargas h1 {
-    font-size: 32px;
+    font-size: 24px;
   }
 
   .titulo-cargas p {
-    font-size: 18px;
+    font-size: 14px;
   }
-}
-.camion-button strong {
-  display: block;
-  margin-top: 8px;
-}
 
-.camion-button small {
-  display: block;
-  margin-top: 5px;
-  font-size: 14px;
-  opacity: 0.7;
+  .camiones-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .camion-button {
+    height: 120px;
+  }
 }

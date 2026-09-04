@@ -1,92 +1,129 @@
+/* Contenedor principal centrado */
 .inicio-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 30px;
+  background-color: #f4f6f8;
+  padding: 20px;
   box-sizing: border-box;
 }
 
+/* Tarjeta principal con sombras y bordes limpios */
 .inicio-card {
   width: 100%;
-  max-width: 550px;
-  padding: 50px;
+  max-width: 440px;
+  background: white;
+  border-radius: 16px;
+  padding: 40px 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  border-radius: 25px;
-  box-sizing: border-box;
-
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
 }
 
-.inicio-icon {
-  font-size: 70px;
+/* Badge o etiqueta superior */
+.inicio-badge {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
   margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.inicio-card h1 {
-  font-size: 42px;
-  margin: 0;
-}
-
-.inicio-card p {
-  font-size: 18px;
-  color: #666;
-  margin: 15px 0 40px;
-}
-
-.inicio-button {
-  width: 100%;
-  max-width: 300px;
-  height: 100px;
-
-  border: none;
-  border-radius: 18px;
-
-  font-size: 30px;
-  font-weight: bold;
-
-  cursor: pointer;
-
+/* Icono con contenedor circular */
+.inicio-icon {
+  font-size: 48px;
+  background-color: #f8fafc;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #e2e8f0;
+}
 
-  transition: transform 0.2s, box-shadow 0.2s;
+/* Título e información */
+.inicio-card h1 {
+  margin: 0 0 10px;
+  font-size: 26px;
+  color: #1f2937;
+  font-weight: 700;
+}
+
+.inicio-card p {
+  margin: 0 0 28px;
+  color: #6b7280;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* Botón principal estilizado acorde al resto del panel */
+.inicio-button {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 10px;
+  background-color: #1f2937;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .inicio-button span {
-  font-size: 35px;
+  font-size: 18px;
 }
 
 .inicio-button:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  background-color: #374151;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(31, 41, 55, 0.2);
 }
 
 .inicio-button:active {
   transform: translateY(0);
 }
 
-footer {
-  position: absolute;
-  bottom: 20px;
-
-  font-size: 14px;
-  color: #888;
+/* Pie de página */
+.inicio-footer {
+  margin-top: 30px;
+  color: #9ca3af;
+  font-size: 13px;
+  text-align: center;
 }
 
-@media (max-width: 600px) {
+/* Adaptación responsive en teléfonos */
+@media (max-width: 500px) {
   .inicio-card {
-    padding: 35px 25px;
+    padding: 30px 20px;
   }
 
   .inicio-card h1 {
-    font-size: 32px;
+    font-size: 22px;
+  }
+
+  .inicio-card p {
+    font-size: 14px;
   }
 
   .inicio-icon {
-    font-size: 55px;
+    width: 75px;
+    height: 75px;
+    font-size: 38px;
   }
 }

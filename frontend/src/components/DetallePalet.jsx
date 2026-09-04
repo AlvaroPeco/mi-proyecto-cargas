@@ -90,6 +90,14 @@ function DetallePalet({ palet, onVolver }) {
 
           <div className="detalle-palet-header">
 
+            {/* Botón Volver reubicado dentro de la cabecera */}
+            <button
+              className="volver-button"
+              onClick={onVolver}
+            >
+              ← Volver
+            </button>
+
             <h1>📦 Detalle del palé</h1>
 
             <div className="informacion-palet">
@@ -194,13 +202,6 @@ function DetallePalet({ palet, onVolver }) {
 
         </>
       )}
-
-      <button
-        className="volver-button"
-        onClick={onVolver}
-      >
-        ← Volver
-      </button>
 
     </div>
   )

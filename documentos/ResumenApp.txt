@@ -1,0 +1,49 @@
+- Login Con usuarios y contraseñas (Añadir)
+
+
+Cargas de Vehiculo 
+
+- Id de la carga (Añadir)
+- Fecha 
+- Camión que hace la ruta Matricula + nombre (Añadir)
+- Ruta (añadiría las provincias que componen esa ruta)
+- Hora de Salida
+- Nº Palets que tiene esa carga (añadir)
+- Estado
+
+
+Detalle de la carga 
+
+Información de la carga
+Id de la carga (Añadir) 
+
+En la ruta podría también (provincias que abarca esa ruta)(Añadir)
+
+
+Palets de la carga (Total de palets Añadir)
+
+- Codigo
+- Cliente
+- dirección de Entrega: 
+	- Dirección 
+	- código postal
+	- Población
+	- Provincia
+- Numero de pedidos que tiene ese palet (Añadir)
+- Estado
+- Codigo Qr (añadir)
+
+Detalle de pale
+ - Numero de pedidos (Añadir)
+ - Codigo Postal (Añadir)
+
+Pedidos del palé
+ - Id del pedido
+ - Id del articulo (añadir)
+ - Nombre del articulo
+ 
+
+
+
+ 
+	 

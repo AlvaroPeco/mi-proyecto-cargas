@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './Inicio.css'
 
-function Inicio({ usuario, onLoginSuccess, onCargas }) {
+function Inicio({ usuario, onLoginSuccess, onCargas, onIrARegistro }) {
   const [nombreUsuario, setNombreUsuario] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -29,7 +29,6 @@ function Inicio({ usuario, onLoginSuccess, onCargas }) {
     }
   }
 
-  // Función para cerrar sesión limpiando el estado del usuario
   const handleLogout = () => {
     onLoginSuccess(null)
     setNombreUsuario('')
@@ -39,22 +38,17 @@ function Inicio({ usuario, onLoginSuccess, onCargas }) {
   return (
     <div className="inicio-container">
       <div className="inicio-card">
-
         <div className="inicio-badge">
           <span>Logística & Expediciones</span>
         </div>
 
-        <div className="inicio-icon">
-          🚛
-        </div>
+        <div className="inicio-icon">🚛</div>
 
         <h1>Gestión de Cargas</h1>
 
         {!usuario ? (
           <form onSubmit={handleLogin} className="inicio-login-form">
-            <p className="inicio-subtitle">
-              Ingresa tus credenciales para acceder al sistema
-            </p>
+            <p className="inicio-subtitle">Ingresa tus credenciales para acceder al sistema</p>
 
             <div className="inicio-input-group">
               <label>Usuario</label>
@@ -89,15 +83,23 @@ function Inicio({ usuario, onLoginSuccess, onCargas }) {
             <p className="inicio-welcome-text">
               Bienvenido, <strong>{usuario.nombre}</strong> ({usuario.rol})
             </p>
-            <p>
-              Sistema de gestión y control centralizado de expediciones, palés y pedidos.
-            </p>
+            <p>Sistema de gestión y control centralizado de expediciones, palés y pedidos.</p>
 
             <button className="inicio-button" onClick={onCargas}>
               <span>📦</span> Ir a Cargas
             </button>
 
-            {/* Botón de Cerrar Sesión */}
+            {/* BOTÓN EXCLUSIVO PARA ADMINISTRADORES */}
+            {usuario.rol === 'ADMIN' && (
+              <button 
+                className="inicio-button" 
+                onClick={onIrARegistro} 
+                style={{ backgroundColor: '#27ae60', marginTop: '10px' }}
+              >
+                <span>👤</span> Dar de alta usuario
+              </button>
+            )}
+
             <button 
               className="inicio-button" 
               onClick={handleLogout} 
@@ -107,7 +109,6 @@ function Inicio({ usuario, onLoginSuccess, onCargas }) {
             </button>
           </div>
         )}
-
       </div>
 
       <footer className="inicio-footer">

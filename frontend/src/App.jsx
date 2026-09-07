@@ -4,17 +4,17 @@ import Cargas from './components/Cargas'
 import Camion from './components/Camion'
 import DetalleCarga from './components/DetalleCarga'
 import DetallePalet from './components/DetallePalet'
+import RegistroUsuario from './components/RegistroUsuario' // Lo crearemos en el Paso 3
 
 function App() {
   const [pantalla, setPantalla] = useState('inicio')
-  const [usuario, setUsuario] = useState(null) // <-- 1. Estado para guardar el usuario logueado
+  const [usuario, setUsuario] = useState(null)
   const [camionSeleccionado, setCamionSeleccionado] = useState(null)
   const [cargaSeleccionada, setCargaSeleccionada] = useState(null)
   const [paletSeleccionado, setPaletSeleccionado] = useState(null)
 
-  const mostrarCargas = () => {
-    setPantalla('cargas')
-  }
+  const mostrarCargas = () => setPantalla('cargas')
+  const mostrarRegistro = () => setPantalla('registroUsuario') // Navegar al panel de alta
 
   const seleccionarCamion = (camion) => {
     setCamionSeleccionado(camion)
@@ -31,68 +31,40 @@ function App() {
     setPantalla('detallePalet')
   }
 
-  const volverInicio = () => {
-    setPantalla('inicio')
-  }
-
-  const volverCargas = () => {
-    setPantalla('cargas')
-  }
-
-  const volverCamion = () => {
-    setPantalla('camion')
-  }
-
-  const volverDetalleCarga = () => {
-    setPantalla('detalleCarga')
-  }
+  const volverInicio = () => setPantalla('inicio')
+  const volverCargas = () => setPantalla('cargas')
+  const volverCamion = () => setPantalla('camion')
+  const volverDetalleCarga = () => setPantalla('detalleCarga')
 
   if (pantalla === 'inicio') {
     return (
       <Inicio
         usuario={usuario}
-        onLoginSuccess={setUsuario} // <-- 2. Le pasamos la función para actualizar el usuario
+        onLoginSuccess={setUsuario}
         onCargas={mostrarCargas}
+        onIrARegistro={mostrarRegistro} // Pasamos la función al componente
       />
     )
+  }
+
+  if (pantalla === 'registroUsuario') {
+    return <RegistroUsuario onVolver={volverInicio} />
   }
 
   if (pantalla === 'cargas') {
-    return (
-      <Cargas
-        onSeleccionarCamion={seleccionarCamion}
-        onVolver={volverInicio}
-      />
-    )
+    return <Cargas onSeleccionarCamion={seleccionarCamion} onVolver={volverInicio} />
   }
 
   if (pantalla === 'camion') {
-    return (
-      <Camion
-        camion={camionSeleccionado}
-        onSeleccionarCarga={seleccionarCarga}
-        onVolver={volverCargas}
-      />
-    )
+    return <Camion camion={camionSeleccionado} onSeleccionarCarga={seleccionarCarga} onVolver={volverCargas} />
   }
 
   if (pantalla === 'detalleCarga') {
-    return (
-      <DetalleCarga
-        carga={cargaSeleccionada}
-        onSeleccionarPalet={seleccionarPalet}
-        onVolver={volverCamion}
-      />
-    )
+    return <DetalleCarga carga={cargaSeleccionada} onSeleccionarPalet={seleccionarPalet} onVolver={volverCamion} />
   }
 
   if (pantalla === 'detallePalet') {
-    return (
-      <DetallePalet
-        palet={paletSeleccionado}
-        onVolver={volverDetalleCarga}
-      />
-    )
+    return <DetallePalet palet={paletSeleccionado} onVolver={volverDetalleCarga} />
   }
 }
 

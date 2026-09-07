@@ -55,7 +55,7 @@ public class UsuarioController {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
     }
-
+    //gg
     // Endpoint para registrar nuevos usuarios con contraseña cifrada
     @PostMapping("/registro")
     public ResponseEntity<?> registrar(@RequestBody Usuario usuario) {

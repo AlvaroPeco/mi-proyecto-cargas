@@ -67,6 +67,75 @@
   line-height: 1.5;
 }
 
+/* Estilos para el formulario de Login */
+.inicio-login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inicio-subtitle {
+  margin-bottom: 20px !important;
+  font-size: 14px !important;
+}
+
+.inicio-input-group {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 18px;
+}
+
+.inicio-input-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.inicio-input-group input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1f2937;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inicio-input-group input:focus {
+  border-color: #1f2937;
+  box-shadow: 0 0 0 3px rgba(31, 41, 55, 0.1);
+}
+
+/* Mensaje de error */
+.inicio-error {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 18px;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  box-sizing: border-box;
+}
+
+/* Vista de bienvenida (tras iniciar sesión) */
+.inicio-usuario-bienvenida {
+  width: 100%;
+}
+
+.inicio-welcome-text {
+  font-size: 16px !important;
+  color: #1f2937 !important;
+  margin-bottom: 12px !important;
+}
+
 /* Botón principal estilizado acorde al resto del panel */
 .inicio-button {
   width: 100%;

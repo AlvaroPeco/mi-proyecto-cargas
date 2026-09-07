@@ -7,6 +7,7 @@ import com.example.demo.service.PaletService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/palets")
@@ -52,8 +53,14 @@ public class PaletController {
 
     @PostMapping("/escanear/{codEscaneo}")
     public Palet escanearPalet(
-            @PathVariable String codEscaneo) {
+            @PathVariable String codEscaneo,
+            @RequestBody(required = false) Map<String, Long> payload) {
 
-        return paletService.escanearPalet(codEscaneo);
+        Long idUsuario = null;
+        if (payload != null && payload.containsKey("idUsuario")) {
+            idUsuario = payload.get("idUsuario");
+        }
+
+        return paletService.escanearPalet(codEscaneo, idUsuario);
     }
 }

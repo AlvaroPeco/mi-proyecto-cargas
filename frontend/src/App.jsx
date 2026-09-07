@@ -6,8 +6,8 @@ import DetalleCarga from './components/DetalleCarga'
 import DetallePalet from './components/DetallePalet'
 
 function App() {
-
   const [pantalla, setPantalla] = useState('inicio')
+  const [usuario, setUsuario] = useState(null) // <-- 1. Estado para guardar el usuario logueado
   const [camionSeleccionado, setCamionSeleccionado] = useState(null)
   const [cargaSeleccionada, setCargaSeleccionada] = useState(null)
   const [paletSeleccionado, setPaletSeleccionado] = useState(null)
@@ -48,7 +48,13 @@ function App() {
   }
 
   if (pantalla === 'inicio') {
-    return <Inicio onCargas={mostrarCargas} />
+    return (
+      <Inicio
+        usuario={usuario}
+        onLoginSuccess={setUsuario} // <-- 2. Le pasamos la función para actualizar el usuario
+        onCargas={mostrarCargas}
+      />
+    )
   }
 
   if (pantalla === 'cargas') {

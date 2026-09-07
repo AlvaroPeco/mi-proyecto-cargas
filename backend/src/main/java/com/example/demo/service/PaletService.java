@@ -3,18 +3,24 @@ package com.example.demo.service;
 import com.example.demo.entity.Carga;
 import com.example.demo.entity.EstadoPalet;
 import com.example.demo.entity.Palet;
+import com.example.demo.entity.Usuario;
 import com.example.demo.repository.PaletRepository;
+import com.example.demo.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class PaletService {
 
     private final PaletRepository paletRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public PaletService(PaletRepository paletRepository) {
+    // Inyectamos también UsuarioRepository en el constructor
+    public PaletService(PaletRepository paletRepository, UsuarioRepository usuarioRepository) {
         this.paletRepository = paletRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     public List<Palet> obtenerTodos() {
@@ -35,11 +41,23 @@ public class PaletService {
                 .orElseThrow(() -> new RuntimeException("Palé no encontrado"));
     }
 
-    public Palet escanearPalet(String codEscaneo) {
+    // Método actualizado: recibe también el idUsuario
+    public Palet escanearPalet(String codEscaneo, Long idUsuario) {
 
         Palet palet = obtenerPorCodigoEscaneo(codEscaneo);
 
+        // 1. Cambiamos el estado
         palet.setEstado(EstadoPalet.cargado);
+
+        // 2. Guardamos la fecha y hora actual del escaneo
+        palet.setFechaEscaneo(LocalDateTime.now());
+
+        // 3. Buscamos y asociamos el usuario que realizó el escaneo
+        if (idUsuario != null) {
+            Usuario usuario = usuarioRepository.findById(idUsuario)
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + idUsuario));
+            palet.setUsuarioEscaneo(usuario);
+        }
 
         return paletRepository.save(palet);
     }

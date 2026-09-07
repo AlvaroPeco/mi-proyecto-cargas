@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "palets")
@@ -29,6 +30,14 @@ public class Palet {
     @Convert(converter = EstadoPaletConverter.class)
     @Column(name = "estado", nullable = false)
     private EstadoPalet estado = EstadoPalet.no_cargado;
+
+    // --- NUEVOS CAMPOS ---
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuarioEscaneo;
+
+    @Column(name = "fecha_escaneo")
+    private LocalDateTime fechaEscaneo;
 
     public Palet() {
     }
@@ -79,5 +88,22 @@ public class Palet {
 
     public void setEstado(EstadoPalet estado) {
         this.estado = estado;
+    }
+
+    // --- NUEVOS GETTERS Y SETTERS ---
+    public Usuario getUsuarioEscaneo() {
+        return usuarioEscaneo;
+    }
+
+    public void setUsuarioEscaneo(Usuario usuarioEscaneo) {
+        this.usuarioEscaneo = usuarioEscaneo;
+    }
+
+    public LocalDateTime getFechaEscaneo() {
+        return fechaEscaneo;
+    }
+
+    public void setFechaEscaneo(LocalDateTime fechaEscaneo) {
+        this.fechaEscaneo = fechaEscaneo;
     }
 }

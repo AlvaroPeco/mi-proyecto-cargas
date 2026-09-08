@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import API_BASE_URL from '../api' // Importamos la variable centralizada
 import './Cargas.css'
 
 function Cargas({ onSeleccionarCamion, onVolver }) {
@@ -6,7 +7,8 @@ function Cargas({ onSeleccionarCamion, onVolver }) {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/vehiculos')
+    // Usamos API_BASE_URL en lugar de http://localhost:8080
+    fetch(`${API_BASE_URL}/api/vehiculos`)
       .then((respuesta) => {
         if (!respuesta.ok) {
           throw new Error('Error al obtener los vehículos')

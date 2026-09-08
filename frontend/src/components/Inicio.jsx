@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import API_BASE_URL from '../api' // <-- 1. Importamos la base centralizada
 import './Inicio.css'
 
 function Inicio({ usuario, onLoginSuccess, onCargas, onIrARegistro }) {
@@ -11,7 +12,8 @@ function Inicio({ usuario, onLoginSuccess, onCargas, onIrARegistro }) {
     setError('')
 
     try {
-      const response = await fetch('http://localhost:8080/api/usuarios/login', {
+      // 2. Usamos API_BASE_URL en lugar de http://localhost:8080
+      const response = await fetch(`${API_BASE_URL}/api/usuarios/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nombre: nombreUsuario, password: password })

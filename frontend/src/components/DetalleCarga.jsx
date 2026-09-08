@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import API_BASE_URL from '../api' // Importamos la base centralizada
 import './DetalleCarga.css'
 
 function DetalleCarga({ carga, onSeleccionarPalet, onVolver }) {
@@ -10,8 +11,9 @@ function DetalleCarga({ carga, onSeleccionarPalet, onVolver }) {
   useEffect(() => {
     const cargarDatos = async () => {
       try {
+        // Sustituimos http://localhost:8080 por API_BASE_URL
         const respuestaCarga = await fetch(
-          `http://localhost:8080/api/cargas/${carga}`
+          `${API_BASE_URL}/api/cargas/${carga}`
         )
 
         if (!respuestaCarga.ok) {
@@ -22,7 +24,7 @@ function DetalleCarga({ carga, onSeleccionarPalet, onVolver }) {
         setDatosCarga(datos)
 
         const respuestaPalets = await fetch(
-          `http://localhost:8080/api/palets/carga/${carga}`
+          `${API_BASE_URL}/api/palets/carga/${carga}`
         )
 
         if (!respuestaPalets.ok) {

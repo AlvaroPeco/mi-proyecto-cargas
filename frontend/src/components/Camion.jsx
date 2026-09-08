@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import API_BASE_URL from '../api' // Importamos la variable centralizada
 import './Camion.css'
 
 function Camion({ camion, onSeleccionarCarga, onVolver }) {
@@ -7,22 +8,41 @@ function Camion({ camion, onSeleccionarCarga, onVolver }) {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/cargas/vehiculo/${camion}`)
-      .then((respuesta) => {
+    const cargarCargasYPalets = async () => {
+      try {
+        // Sustituimos http://localhost:8080 por API_BASE_URL
+        const respuesta = await fetch(`${API_BASE_URL}/api/cargas/vehiculo/${camion}`)
         if (!respuesta.ok) {
           throw new Error('Error al obtener las cargas')
         }
-        return respuesta.json()
-      })
-      .then((datos) => {
-        setCargas(datos)
+        const datosCargas = await respuesta.json()
+
+        // Para cada carga, consultamos sus palés apuntando a API_BASE_URL
+        const cargasConPalets = await Promise.all(
+          datosCargas.map(async (carga) => {
+            try {
+              const resPalets = await fetch(`${API_BASE_URL}/api/palets/carga/${carga.idCarga}`)
+              if (resPalets.ok) {
+                const palets = await resPalets.json()
+                return { ...carga, numPalets: palets.length }
+              }
+            } catch (e) {
+              console.error('Error al obtener palés de la carga', carga.idCarga, e)
+            }
+            return { ...carga, numPalets: 0 }
+          })
+        )
+
+        setCargas(cargasConPalets)
         setCargando(false)
-      })
-      .catch((error) => {
-        console.error(error)
+      } catch (err) {
+        console.error(err)
         setError('No se han podido cargar las cargas')
         setCargando(false)
-      })
+      }
+    }
+
+    cargarCargasYPalets()
   }, [camion])
 
   const obtenerClaseEstado = (estado) => {
@@ -57,8 +77,6 @@ function Camion({ camion, onSeleccionarCarga, onVolver }) {
 
   return (
     <div className="camion-container">
-
-      {/* Cabecera que incluye el botón volver arriba a la izquierda */}
       <div className="camion-header">
         <button className="volver-button" onClick={onVolver}>
           ← Volver
@@ -70,22 +88,12 @@ function Camion({ camion, onSeleccionarCarga, onVolver }) {
         </div>
       </div>
 
-      {cargando && (
-        <div className="mensaje">
-          Cargando cargas...
-        </div>
-      )}
+      {cargando && <div className="mensaje">Cargando cargas...</div>}
 
-      {error && (
-        <div className="mensaje">
-          {error}
-        </div>
-      )}
+      {error && <div className="mensaje">{error}</div>}
 
       {!cargando && !error && cargas.length === 0 && (
-        <div className="mensaje">
-          Este vehículo no tiene cargas.
-        </div>
+        <div className="mensaje">Este vehículo no tiene cargas.</div>
       )}
 
       {!cargando && !error && cargas.length > 0 && (
@@ -93,9 +101,12 @@ function Camion({ camion, onSeleccionarCarga, onVolver }) {
           <table className="cargas-tabla">
             <thead>
               <tr>
+                <th>ID Carga</th>
                 <th>Fecha</th>
+                <th>Camión</th>
                 <th>Ruta</th>
                 <th>Hora de salida</th>
+                <th>Nº Palets</th>
                 <th>Estado</th>
               </tr>
             </thead>
@@ -106,9 +117,16 @@ function Camion({ camion, onSeleccionarCarga, onVolver }) {
                   className="carga-fila"
                   onClick={() => onSeleccionarCarga(carga.idCarga)}
                 >
+                  <td>{carga.idCarga}</td>
                   <td>{carga.fecha}</td>
-                  <td>{carga.ruta.nombre}</td>
+                  <td>
+                    {carga.vehiculo
+                      ? `${carga.vehiculo.matricula} - ${carga.vehiculo.nombre}`
+                      : '-'}
+                  </td>
+                  <td>{carga.ruta?.nombre || '-'}</td>
                   <td>{carga.horaSalida || '-'}</td>
+                  <td>{carga.numPalets}</td>
                   <td>
                     <span className={obtenerClaseEstado(carga.estado)}>
                       {mostrarEstado(carga.estado)}
@@ -120,7 +138,6 @@ function Camion({ camion, onSeleccionarCarga, onVolver }) {
           </table>
         </div>
       )}
-
     </div>
   )
 }

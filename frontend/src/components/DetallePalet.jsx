@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import API_BASE_URL from '../api' // Importamos la variable centralizada
 import './DetallePalet.css'
 
 function DetallePalet({ palet, onVolver }) {
@@ -14,8 +15,9 @@ function DetallePalet({ palet, onVolver }) {
 
       try {
 
+        // Sustituimos http://localhost:8080 por API_BASE_URL
         const respuestaPalet = await fetch(
-          `http://localhost:8080/api/palets/${palet}`
+          `${API_BASE_URL}/api/palets/${palet}`
         )
 
         if (!respuestaPalet.ok) {
@@ -27,7 +29,7 @@ function DetallePalet({ palet, onVolver }) {
         setDatosPalet(datos)
 
         const respuestaPedidos = await fetch(
-          `http://localhost:8080/api/pedidos/palet/${palet}`
+          `${API_BASE_URL}/api/pedidos/palet/${palet}`
         )
 
         if (!respuestaPedidos.ok) {

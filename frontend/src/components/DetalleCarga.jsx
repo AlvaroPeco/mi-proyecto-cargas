@@ -7,11 +7,14 @@ function DetalleCarga({ carga, onSeleccionarPalet, onVolver }) {
   const [palets, setPalets] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState('')
+  const [recargar, setRecargar] = useState(0)
 
   useEffect(() => {
+    let ignorar = false
+
     const cargarDatos = async () => {
+      setCargando(true)
       try {
-        // Sustituimos http://localhost:8080 por API_BASE_URL
         const respuestaCarga = await fetch(
           `${API_BASE_URL}/api/cargas/${carga}`
         )
@@ -21,7 +24,6 @@ function DetalleCarga({ carga, onSeleccionarPalet, onVolver }) {
         }
 
         const datos = await respuestaCarga.json()
-        setDatosCarga(datos)
 
         const respuestaPalets = await fetch(
           `${API_BASE_URL}/api/palets/carga/${carga}`
@@ -33,17 +35,76 @@ function DetalleCarga({ carga, onSeleccionarPalet, onVolver }) {
 
         const datosPalets = await respuestaPalets.json()
 
-        setPalets(datosPalets)
-        setCargando(false)
+        if (!ignorar) {
+          setDatosCarga(datos)
+          setPalets(datosPalets)
+          setCargando(false)
+        }
       } catch (error) {
-        console.error(error)
-        setError('No se ha podido cargar la información')
-        setCargando(false)
+        if (!ignorar) {
+          console.error(error)
+          setError('No se ha podido cargar la información')
+          setCargando(false)
+        }
       }
     }
 
     cargarDatos()
-  }, [carga])
+
+    return () => {
+      ignorar = true
+    }
+  }, [carga, recargar])
+
+  // Función para marcar el palé como cargado
+  const marcarPaletComoCargado = async (e, idPalet) => {
+    e.stopPropagation()
+
+    try {
+      const respuesta = await fetch(
+        `${API_BASE_URL}/api/palets/${idPalet}/marcar-cargado`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+
+      if (respuesta.ok) {
+        setRecargar((prev) => prev + 1)
+      } else {
+        alert('No se pudo marcar el palé como cargado')
+      }
+    } catch (err) {
+      console.error('Error al actualizar el estado del palé:', err)
+    }
+  }
+
+  // NUEVA FUNCIÓN: Desmarcar el palé como cargado
+  const desmarcarPaletComoCargado = async (e, idPalet) => {
+    e.stopPropagation()
+
+    try {
+      const respuesta = await fetch(
+        `${API_BASE_URL}/api/palets/${idPalet}/desmarcar-cargado`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+
+      if (respuesta.ok) {
+        setRecargar((prev) => prev + 1)
+      } else {
+        alert('No se pudo desmarcar el palé')
+      }
+    } catch (err) {
+      console.error('Error al desmarcar el palé:', err)
+    }
+  }
 
   const obtenerEstadoPalet = (estado) => {
     if (estado === 'cargado') {
@@ -75,7 +136,6 @@ function DetalleCarga({ carga, onSeleccionarPalet, onVolver }) {
 
       {!cargando && !error && datosCarga && (
         <>
-          {/* Cabecera con el botón Volver dentro del bloque */}
           <div className="detalle-header">
             <button className="volver-button" onClick={onVolver}>
               ← Volver
@@ -86,12 +146,12 @@ function DetalleCarga({ carga, onSeleccionarPalet, onVolver }) {
             <div className="informacion-carga">
               <div className="dato-carga">
                 <span>Vehículo</span>
-                <strong>{datosCarga.vehiculo.nombre}</strong>
+                <strong>{datosCarga.vehiculo?.nombre}</strong>
               </div>
 
               <div className="dato-carga">
                 <span>Matrícula</span>
-                <strong>{datosCarga.vehiculo.matricula}</strong>
+                <strong>{datosCarga.vehiculo?.matricula}</strong>
               </div>
 
               <div className="dato-carga">
@@ -101,7 +161,7 @@ function DetalleCarga({ carga, onSeleccionarPalet, onVolver }) {
 
               <div className="dato-carga">
                 <span>Ruta</span>
-                <strong>{datosCarga.ruta.nombre}</strong>
+                <strong>{datosCarga.ruta?.nombre}</strong>
               </div>
 
               <div className="dato-carga">
@@ -116,7 +176,6 @@ function DetalleCarga({ carga, onSeleccionarPalet, onVolver }) {
             </div>
           </div>
 
-          {/* Sección de palés */}
           <div className="palets-container">
             <h2>📦 Palés de la carga</h2>
 
@@ -132,6 +191,7 @@ function DetalleCarga({ carga, onSeleccionarPalet, onVolver }) {
                       <th>Dirección</th>
                       <th>Provincia</th>
                       <th>Estado</th>
+                      <th>Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -142,13 +202,34 @@ function DetalleCarga({ carga, onSeleccionarPalet, onVolver }) {
                         onClick={() => onSeleccionarPalet(palet.idPalet)}
                       >
                         <td className="codigo-palet">{palet.codEscaneo}</td>
-                        <td>{palet.cliente.nombreEmpresa}</td>
-                        <td>{palet.direccion.direccion}</td>
-                        <td>{palet.direccion.provincia}</td>
+                        <td>{palet.cliente?.nombreEmpresa}</td>
+                        <td>{palet.direccion?.direccion}</td>
+                        <td>{palet.direccion?.provincia}</td>
                         <td>
                           <span className={obtenerEstadoPalet(palet.estado)}>
                             {mostrarEstadoPalet(palet.estado)}
                           </span>
+                        </td>
+                        <td>
+                          {palet.estado !== 'cargado' ? (
+                            <button
+                              onClick={(e) => marcarPaletComoCargado(e, palet.idPalet)}
+                              className="btn-marcar-cargado"
+                            >
+                              Marcar Cargado
+                            </button>
+                          ) : (
+                            <div className="acciones-cargado">
+                              <span className="texto-cargado">✓ Cargado</span>
+                              <button
+                                onClick={(e) => desmarcarPaletComoCargado(e, palet.idPalet)}
+                                className="btn-desmarcar-cargado"
+                                title="Desmarcar si hubo un error"
+                              >
+                                Desmarcar
+                              </button>
+                            </div>
+                          )}
                         </td>
                       </tr>
                     ))}

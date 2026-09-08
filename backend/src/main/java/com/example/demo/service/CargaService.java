@@ -7,6 +7,7 @@ import com.example.demo.entity.Vehiculo;
 import com.example.demo.repository.CargaRepository;
 import com.example.demo.repository.PaletRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -76,5 +77,43 @@ public class CargaService {
         carga.setEstado(EstadoCarga.cargada);
 
         return cargaRepository.save(carga);
+    }
+
+    @Transactional
+    public void sincronizarEstadosDeCargas() {
+        List<Carga> cargas = cargaRepository.findAll();
+
+        for (Carga carga : cargas) {
+            // Ignoramos las cargas ya finalizadas
+            if (carga.getEstado() == EstadoCarga.finalizada) {
+                continue;
+            }
+
+            List<Palet> palets = paletRepository.findByCarga(carga);
+
+            EstadoCarga estadoCalculado;
+
+            if (palets.isEmpty()) {
+                estadoCalculado = EstadoCarga.pendiente;
+            } else {
+                long paletsCargados = palets.stream()
+                        .filter(palet -> palet.getEstado().name().equals("cargado"))
+                        .count();
+
+                if (paletsCargados == 0) {
+                    estadoCalculado = EstadoCarga.pendiente;
+                } else if (paletsCargados < palets.size()) {
+                    estadoCalculado = EstadoCarga.en_preparacion;
+                } else {
+                    estadoCalculado = EstadoCarga.cargada;
+                }
+            }
+
+            // Actualizamos la base de datos solo si el estado ha cambiado
+            if (carga.getEstado() != estadoCalculado) {
+                carga.setEstado(estadoCalculado);
+                cargaRepository.save(carga);
+            }
+        }
     }
 }

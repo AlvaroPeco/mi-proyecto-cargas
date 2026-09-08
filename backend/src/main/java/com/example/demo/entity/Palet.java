@@ -1,6 +1,8 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,6 +24,7 @@ public class Palet {
 
     @ManyToOne
     @JoinColumn(name = "id_direccion", nullable = false)
+    @NotFound(action = NotFoundAction.IGNORE) // <-- AÑADIDO PARA EVITAR EL ERROR SI LA DIRECCIÓN NO EXISTE EN LA BD
     private DireccionEntrega direccion;
 
     @Column(name = "cod_escaneo", nullable = false, unique = true)

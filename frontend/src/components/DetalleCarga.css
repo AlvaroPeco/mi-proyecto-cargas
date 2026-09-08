@@ -132,6 +132,68 @@
   background: #f3f4f6;
 }
 
+/* --- ESTILOS PARA LOS BOTONES DE ACCIÓN --- */
+
+/* Botón verde para marcar como cargado */
+.btn-marcar-cargado {
+  background-color: #28a745;
+  color: #ffffff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+}
+
+.btn-marcar-cargado:hover {
+  background-color: #218838;
+}
+
+.btn-marcar-cargado:active {
+  transform: scale(0.96);
+}
+
+/* Contenedor cuando el palé ya está cargado */
+.acciones-cargado {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Texto indicador "✓ Cargado" */
+.texto-cargado {
+  color: #166534;
+  font-weight: bold;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Botón rojo/bordeado para desmarcar */
+.btn-desmarcar-cargado {
+  background-color: transparent;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-desmarcar-cargado:hover {
+  background-color: #fef2f2;
+  border-color: #dc2626;
+}
+
+.btn-desmarcar-cargado:active {
+  transform: scale(0.95);
+}
+
 @media (max-width: 700px) {
   .detalle-container {
     padding: 15px;

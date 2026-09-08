@@ -4,6 +4,8 @@ import com.example.demo.entity.Carga;
 import com.example.demo.entity.Palet;
 import com.example.demo.service.CargaService;
 import com.example.demo.service.PaletService;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -62,5 +64,16 @@ public class PaletController {
         }
 
         return paletService.escanearPalet(codEscaneo, idUsuario);
+    }
+
+    @PutMapping("/{id}/marcar-cargado")
+        public Palet marcarComoCargado(@PathVariable Integer id) {
+            return paletService.marcarComoCargado(id);
+    }
+
+    @PutMapping("/{id}/desmarcar-cargado")
+        public ResponseEntity<Palet> desmarcarComoCargado(@PathVariable Integer id) {
+            Palet paletActualizado = paletService.desmarcarComoCargado(id);
+                return ResponseEntity.ok(paletActualizado);
     }
 }

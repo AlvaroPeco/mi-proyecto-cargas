@@ -20,7 +20,6 @@ public class PaletService {
     private final UsuarioRepository usuarioRepository;
     private final CargaRepository cargaRepository;
 
-    // 1. Inyectamos CargaRepository en el constructor
     public PaletService(
             PaletRepository paletRepository, 
             UsuarioRepository usuarioRepository,
@@ -77,7 +76,44 @@ public class PaletService {
         return paletGuardado;
     }
 
-    // 6. Lógica de cálculo según el recuento de palés
+    // --- MARCAR MANUALMENTE UN PALÉ COMO CARGADO ---
+    public Palet marcarComoCargado(Integer idPalet) {
+        Palet palet = obtenerPorId(idPalet);
+
+        // Cambiamos el estado
+        palet.setEstado(EstadoPalet.cargado);
+        palet.setFechaEscaneo(LocalDateTime.now());
+
+        Palet paletGuardado = paletRepository.save(palet);
+
+        // Recalculamos y actualizamos el estado de la carga
+        Carga carga = paletGuardado.getCarga();
+        if (carga != null) {
+            actualizarEstadoCarga(carga);
+        }
+
+        return paletGuardado;
+    }
+
+    // --- DESMARCAR UN PALÉ (VOLVER A PENDIENTE) ---
+    public Palet desmarcarComoCargado(Integer id) {
+        Palet palet = obtenerPorId(id);
+
+        palet.setEstado(EstadoPalet.no_cargado);
+        palet.setFechaEscaneo(null);
+        palet.setUsuarioEscaneo(null);
+
+        Palet paletGuardado = paletRepository.save(palet);
+
+        Carga carga = paletGuardado.getCarga();
+        if (carga != null) {
+            actualizarEstadoCarga(carga);
+        }
+
+        return paletGuardado;
+    }
+
+    // Lógica de cálculo según el recuento de palés
     private void actualizarEstadoCarga(Carga carga) {
         List<Palet> paletsDeCarga = paletRepository.findByCarga(carga);
 

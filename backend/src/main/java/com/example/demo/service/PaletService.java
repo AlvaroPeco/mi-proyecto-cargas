@@ -1,9 +1,11 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Carga;
+import com.example.demo.entity.EstadoCarga;
 import com.example.demo.entity.EstadoPalet;
 import com.example.demo.entity.Palet;
 import com.example.demo.entity.Usuario;
+import com.example.demo.repository.CargaRepository;
 import com.example.demo.repository.PaletRepository;
 import com.example.demo.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
@@ -16,11 +18,16 @@ public class PaletService {
 
     private final PaletRepository paletRepository;
     private final UsuarioRepository usuarioRepository;
+    private final CargaRepository cargaRepository;
 
-    // Inyectamos también UsuarioRepository en el constructor
-    public PaletService(PaletRepository paletRepository, UsuarioRepository usuarioRepository) {
+    // 1. Inyectamos CargaRepository en el constructor
+    public PaletService(
+            PaletRepository paletRepository, 
+            UsuarioRepository usuarioRepository,
+            CargaRepository cargaRepository) {
         this.paletRepository = paletRepository;
         this.usuarioRepository = usuarioRepository;
+        this.cargaRepository = cargaRepository;
     }
 
     public List<Palet> obtenerTodos() {
@@ -41,7 +48,6 @@ public class PaletService {
                 .orElseThrow(() -> new RuntimeException("Palé no encontrado"));
     }
 
-    // Método actualizado: recibe también el idUsuario
     public Palet escanearPalet(String codEscaneo, Long idUsuario) {
 
         Palet palet = obtenerPorCodigoEscaneo(codEscaneo);
@@ -59,6 +65,40 @@ public class PaletService {
             palet.setUsuarioEscaneo(usuario);
         }
 
-        return paletRepository.save(palet);
+        // 4. Guardamos el palé
+        Palet paletGuardado = paletRepository.save(palet);
+
+        // 5. Actualizamos automáticamente el estado de la Carga asociada
+        Carga carga = paletGuardado.getCarga();
+        if (carga != null) {
+            actualizarEstadoCarga(carga);
+        }
+
+        return paletGuardado;
+    }
+
+    // 6. Lógica de cálculo según el recuento de palés
+    private void actualizarEstadoCarga(Carga carga) {
+        List<Palet> paletsDeCarga = paletRepository.findByCarga(carga);
+
+        if (paletsDeCarga.isEmpty()) {
+            carga.setEstado(EstadoCarga.pendiente);
+        } else {
+            long escaneados = paletsDeCarga.stream()
+                    .filter(p -> p.getEstado() == EstadoPalet.cargado)
+                    .count();
+
+            int total = paletsDeCarga.size();
+
+            if (escaneados == 0) {
+                carga.setEstado(EstadoCarga.pendiente);
+            } else if (escaneados == total) {
+                carga.setEstado(EstadoCarga.cargada);
+            } else {
+                carga.setEstado(EstadoCarga.en_preparacion);
+            }
+        }
+
+        cargaRepository.save(carga);
     }
 }

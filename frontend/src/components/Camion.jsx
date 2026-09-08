@@ -49,7 +49,7 @@ function Camion({ camion, onSeleccionarCarga, onVolver }) {
     switch (estado) {
       case 'pendiente':
         return 'estado estado-pendiente'
-      case 'en preparacion':
+      case 'en_preparacion':
         return 'estado estado-en-preparacion'
       case 'cargada':
         return 'estado estado-cargada'
@@ -64,7 +64,7 @@ function Camion({ camion, onSeleccionarCarga, onVolver }) {
     switch (estado) {
       case 'pendiente':
         return 'Pendiente'
-      case 'en preparacion':
+      case 'en_preparacion':
         return 'En preparación'
       case 'cargada':
         return 'Cargada'

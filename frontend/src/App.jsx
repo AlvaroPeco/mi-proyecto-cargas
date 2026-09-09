@@ -4,7 +4,8 @@ import Cargas from './components/Cargas'
 import Camion from './components/Camion'
 import DetalleCarga from './components/DetalleCarga'
 import DetallePalet from './components/DetallePalet'
-import RegistroUsuario from './components/RegistroUsuario' // Lo crearemos en el Paso 3
+import RegistroUsuario from './components/RegistroUsuario'
+import PanelLogs from './components/PanelLogs'
 
 function App() {
   const [pantalla, setPantalla] = useState('inicio')
@@ -14,7 +15,8 @@ function App() {
   const [paletSeleccionado, setPaletSeleccionado] = useState(null)
 
   const mostrarCargas = () => setPantalla('cargas')
-  const mostrarRegistro = () => setPantalla('registroUsuario') // Navegar al panel de alta
+  const mostrarRegistro = () => setPantalla('registroUsuario')
+  const mostrarLogs = () => setPantalla('logs')
 
   const seleccionarCamion = (camion) => {
     setCamionSeleccionado(camion)
@@ -42,13 +44,18 @@ function App() {
         usuario={usuario}
         onLoginSuccess={setUsuario}
         onCargas={mostrarCargas}
-        onIrARegistro={mostrarRegistro} // Pasamos la función al componente
+        onIrARegistro={mostrarRegistro}
+        onLogs={mostrarLogs}
       />
     )
   }
 
   if (pantalla === 'registroUsuario') {
-    return <RegistroUsuario onVolver={volverInicio} />
+    return <RegistroUsuario usuario={usuario} onVolver={volverInicio} />
+  }
+
+  if (pantalla === 'logs') {
+    return <PanelLogs onVolver={volverInicio} />
   }
 
   if (pantalla === 'cargas') {

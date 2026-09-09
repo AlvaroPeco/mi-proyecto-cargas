@@ -195,4 +195,43 @@
     height: 75px;
     font-size: 38px;
   }
+
+  /* Estilos para los botones del menú de bienvenida */
+.inicio-usuario-bienvenida {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.inicio-button {
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #2c3e50;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.inicio-button:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.inicio-button:active {
+  transform: translateY(0);
+}
+
+/* Efectos hover específicos por color (si usas inline styles se aplican automáticamente con el opacity) */
+.inicio-button span {
+  font-size: 18px;
+}
 }

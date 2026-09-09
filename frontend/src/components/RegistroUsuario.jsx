@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import API_BASE_URL from '../api' // Importamos la URL centralizada
+import API_BASE_URL from '../api' 
 import './Inicio.css'
 
-function RegistroUsuario({ onVolver }) {
+function RegistroUsuario({ onVolver, usuario }) {
   const [nombre, setNombre] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -15,12 +15,21 @@ function RegistroUsuario({ onVolver }) {
     setMensaje('')
     setError('')
 
+    // Obtenemos el ID del administrador logueado
+    const usuarioSesion = JSON.parse(localStorage.getItem('usuario') || '{}')
+    const idAdmin = usuario?.idUsuario || usuario?.id || usuarioSesion?.idUsuario || usuarioSesion?.id
+
     try {
-      // Sustituimos http://localhost:8080 por API_BASE_URL
       const response = await fetch(`${API_BASE_URL}/api/usuarios/registro`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre, email, password, rol })
+        body: JSON.stringify({ 
+          nombre, 
+          email, 
+          password, 
+          rol,
+          idAdmin // <-- Pasamos el ID del administrador ejecutor
+        })
       })
 
       if (response.ok) {

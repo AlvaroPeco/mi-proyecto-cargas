@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import API_BASE_URL from '../api' // <-- 1. Importamos la base centralizada
+import API_BASE_URL from '../api' 
 import './Inicio.css'
 
-function Inicio({ usuario, onLoginSuccess, onCargas, onIrARegistro }) {
+// 1. Añadimos 'onLogs' entre los props que recibe el componente
+function Inicio({ usuario, onLoginSuccess, onCargas, onIrARegistro, onLogs }) {
   const [nombreUsuario, setNombreUsuario] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -12,7 +13,6 @@ function Inicio({ usuario, onLoginSuccess, onCargas, onIrARegistro }) {
     setError('')
 
     try {
-      // 2. Usamos API_BASE_URL en lugar de http://localhost:8080
       const response = await fetch(`${API_BASE_URL}/api/usuarios/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -91,7 +91,7 @@ function Inicio({ usuario, onLoginSuccess, onCargas, onIrARegistro }) {
               <span>📦</span> Ir a Cargas
             </button>
 
-            {/* BOTÓN EXCLUSIVO PARA ADMINISTRADORES */}
+            {/* BOTÓN EXCLUSIVO PARA ADMINISTRADORES: REGISTRO */}
             {usuario.rol === 'ADMIN' && (
               <button 
                 className="inicio-button" 
@@ -99,6 +99,17 @@ function Inicio({ usuario, onLoginSuccess, onCargas, onIrARegistro }) {
                 style={{ backgroundColor: '#27ae60', marginTop: '10px' }}
               >
                 <span>👤</span> Dar de alta usuario
+              </button>
+            )}
+
+            {/* NUEVO BOTÓN EXCLUSIVO PARA ADMINISTRADORES: VER LOGS */}
+            {usuario.rol === 'ADMIN' && (
+              <button 
+                className="inicio-button" 
+                onClick={onLogs} 
+                style={{ backgroundColor: '#2980b9', marginTop: '10px' }}
+              >
+                <span>📋</span> Ver Logs del Sistema
               </button>
             )}
 

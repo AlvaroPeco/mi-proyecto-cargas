@@ -15,20 +15,25 @@ function RegistroUsuario({ onVolver, usuario }) {
     setMensaje('')
     setError('')
 
-    // Obtenemos el ID del administrador logueado
+    // 1. Obtenemos el ID del administrador logueado
     const usuarioSesion = JSON.parse(localStorage.getItem('usuario') || '{}')
     const idAdmin = usuario?.idUsuario || usuario?.id || usuarioSesion?.idUsuario || usuarioSesion?.id
 
+    // 2. Construimos la URL adjuntando el idAdmin si existe
+    const url = idAdmin 
+      ? `${API_BASE_URL}/api/usuarios/registro?idAdmin=${idAdmin}`
+      : `${API_BASE_URL}/api/usuarios/registro`
+
     try {
-      const response = await fetch(`${API_BASE_URL}/api/usuarios/registro`, {
+      const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        // 3. Enviamos en el JSON solo los datos que mapean directamente con la entidad Usuario
         body: JSON.stringify({ 
           nombre, 
           email, 
           password, 
-          rol,
-          idAdmin // <-- Pasamos el ID del administrador ejecutor
+          rol
         })
       })
 
